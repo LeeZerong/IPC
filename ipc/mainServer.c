@@ -47,33 +47,11 @@ int main()
 	sscanf(info, "The lib path is: %s ", name);
 	printf("The lib path is %s\n", name);
 	
+	//切割从配置文件中获得的字符串
 	lib_path = strtok(name, ",");
-	
-	//打开动态链接库
-	handle = dlopen(lib_path, RTLD_LAZY);
-	if (!handle) 
-	{
-		printf("%s\n", dlerror());
-		ret = -3;
-		goto err;
-	}
-	
-	//获取功能函数存入函数表中
-	func = (FUNC)dlsym(handle, "printA");
-	if(func != NULL)
-		func_list.printA = func;
-	
-	func = (FUNC)dlsym(handle, "printB");
-	if(func != NULL)
-		func_list.printB = func;
-	
-	func = (FUNC)dlsym(handle, "printC");
-	if(func != NULL)
-		func_list.printC = func;
 
 	while(lib_path)
 	{
-
 		//打开动态链接库
 		handle = dlopen(lib_path, RTLD_LAZY);
 		if (!handle) 
@@ -95,6 +73,8 @@ int main()
 		func = (FUNC)dlsym(handle, "printC");
 		if(func != NULL)
 			func_list.printC = func;
+		
+		lib_path = strtok(NULL, ",");
 	}	
 		
 	if(func_list.printA != NULL)
