@@ -33,6 +33,7 @@ int main()
 	{
 		perror("open config fail");
 		ret = -1;
+		goto err;
 	}
 	
 	//读取配置文件的信息
